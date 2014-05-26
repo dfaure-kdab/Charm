@@ -38,9 +38,11 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.6.0 )
 SET( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" )
 SET( CMAKE_AUTOMOC ON )
 
-# try Qt5 first, and prefer that if found
-find_package(Qt5Core QUIET)
-IF (Qt5Core_FOUND)
+option(QT5_BUILD "Build Charm using the Qt5 framework" FALSE)
+
+### Qt 4 and 5 ###
+IF (QT5_BUILD)
+    find_package(Qt5Core REQUIRED)
     find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Xml REQUIRED)
     find_package(Qt5Network REQUIRED)
@@ -116,7 +118,7 @@ IF (Qt5Core_FOUND)
 
     set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 ELSE()
-    # No Qt5 found, try Qt4
+    # Qt4
     find_package(Qt4 COMPONENTS QtMain QtCore QtGui QtSql QtXml QtNetwork REQUIRED)
     INCLUDE( UseQt4 )
 
